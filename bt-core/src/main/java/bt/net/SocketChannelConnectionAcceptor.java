@@ -56,6 +56,20 @@ public class SocketChannelConnectionAcceptor implements PeerConnectionAcceptor {
         this.localAddress = localAddress;
     }
 
+    public SocketChannelConnectionAcceptor(
+            Selector selector,
+            IPeerCache peerCache,
+            IPeerConnectionFactory connectionFactory,
+            InetSocketAddress localAddress,
+            ServerSocketChannel serverChannel) {
+
+        this.selector = selector;
+        this.peerCache = peerCache;
+        this.connectionFactory = connectionFactory;
+        this.localAddress = localAddress;
+        this.serverChannel = serverChannel;
+    }
+
     /**
      * @since 1.6
      */

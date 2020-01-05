@@ -5,7 +5,7 @@
     <groupId>com.github.atomashpolskiy</groupId>
     <artifactId>bt-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.9-SNAPSHOT</version>
+    <version>2.0-STEGFOG</version>
 
     <name>Bt</name>
     <description>BitTorrent Library</description>

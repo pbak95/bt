@@ -202,7 +202,7 @@ public class ServiceModule implements Module {
     public SharedSelector provideSelector(IRuntimeLifecycleBinder lifecycleBinder) {
         SharedSelector selector;
         try {
-            selector = new SharedSelector(Selector.open());
+            selector = new SharedSelector(config.getCommonSelector());
         } catch (IOException e) {
             throw new RuntimeException("Failed to get I/O selector", e);
         }
@@ -244,6 +244,7 @@ public class ServiceModule implements Module {
             IPeerConnectionFactory connectionFactory,
             Config config) {
         InetSocketAddress localAddress = new InetSocketAddress(config.getAcceptorAddress(), config.getAcceptorPort());
-        return new SocketChannelConnectionAcceptor(selector, peerCache, connectionFactory, localAddress);
+        return new SocketChannelConnectionAcceptor(selector, peerCache, connectionFactory, localAddress,
+                config.getCommonServerChannel());
     }
 }

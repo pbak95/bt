@@ -200,16 +200,20 @@ public class SwarmBuilder {
     public Swarm build() {
         SwarmPeerFactory swarmPeerFactory = new DefaultSwarmPeerFactory(getFileRoot(), torrentFiles, torrentSupplier, startingPort);
         BtRuntimeFactory runtimeFactory = createRuntimeFactory(modules);
-
         Collection<SwarmPeer> peers = new ArrayList<>(seedersCount + leechersCount + 1);
-        for (int i = 0; i < seedersCount; i++) {
-            peers.add(swarmPeerFactory.createSeeder(newRuntimeBuilder(runtimeFactory)));
-        }
-        for (int i = 0; i < leechersCount; i++) {
-            peers.add(swarmPeerFactory.createLeecher(newRuntimeBuilder(runtimeFactory)));
-        }
-        for (int i = 0; i < magnetLeechersCount; i++) {
-            peers.add(swarmPeerFactory.createMagnetLeecher(newRuntimeBuilder(runtimeFactory)));
+
+        try {
+            for (int i = 0; i < seedersCount; i++) {
+                peers.add(swarmPeerFactory.createSeeder(newRuntimeBuilder(runtimeFactory)));
+            }
+            for (int i = 0; i < leechersCount; i++) {
+                peers.add(swarmPeerFactory.createLeecher(newRuntimeBuilder(runtimeFactory)));
+            }
+            for (int i = 0; i < magnetLeechersCount; i++) {
+                peers.add(swarmPeerFactory.createMagnetLeecher(newRuntimeBuilder(runtimeFactory)));
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to get I/O selector", e);
         }
 
         return new Swarm(swarmResources, peers);
@@ -223,12 +227,12 @@ public class SwarmBuilder {
         return new BtRuntimeFactory(modules);
     }
 
-    private BtRuntimeBuilder newRuntimeBuilder(BtRuntimeFactory runtimeFactory) {
+    private BtRuntimeBuilder newRuntimeBuilder(BtRuntimeFactory runtimeFactory) throws IOException {
         Config config = cloneConfig(this.config);
         return runtimeFactory.builder(config);
     }
 
-    private Config cloneConfig(Config config) {
+    private Config cloneConfig(Config config) throws IOException {
         return new Config(config);
     }
 }
