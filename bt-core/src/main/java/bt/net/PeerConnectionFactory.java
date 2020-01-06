@@ -63,6 +63,8 @@ public class PeerConnectionFactory implements IPeerConnectionFactory {
 
     private InetSocketAddress localOutgoingSocketAddress;
 
+    private InetAddress myAddress;
+
     public PeerConnectionFactory(Selector selector,
                                  IConnectionHandlerFactory connectionHandlerFactory,
                                  IChannelPipelineFactory channelPipelineFactory,
@@ -82,6 +84,7 @@ public class PeerConnectionFactory implements IPeerConnectionFactory {
         this.dataReceiver = dataReceiver;
         this.eventSource = eventSource;
         this.localOutgoingSocketAddress = new InetSocketAddress(config.getAcceptorAddress(), 0);
+        this.myAddress = config.getAcceptorAddress();
     }
 
     @Override
@@ -90,11 +93,16 @@ public class PeerConnectionFactory implements IPeerConnectionFactory {
         Objects.requireNonNull(torrentId);
 
         InetAddress inetAddress = peer.getInetAddress();
+
+        if (inetAddress.toString().equals(myAddress.toString())) {
+            return ConnectionResult.failure("Tried to connect to local address");
+        }
+
         int port = peer.getPort();
 
         SocketChannel channel;
         try {
-            channel = getChannel(inetAddress, port);
+                channel = getChannel(inetAddress, port);
         } catch (IOException e) {
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Failed to establish connection with peer: {}. Reason: {} ({})",

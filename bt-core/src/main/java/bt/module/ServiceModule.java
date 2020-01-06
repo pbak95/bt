@@ -202,7 +202,7 @@ public class ServiceModule implements Module {
     public SharedSelector provideSelector(IRuntimeLifecycleBinder lifecycleBinder) {
         SharedSelector selector;
         try {
-            selector = new SharedSelector(config.getCommonSelector());
+            selector = new SharedSelector(Selector.open());
         } catch (IOException e) {
             throw new RuntimeException("Failed to get I/O selector", e);
         }

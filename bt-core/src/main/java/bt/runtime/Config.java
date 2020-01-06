@@ -61,7 +61,7 @@ public class Config {
     private int numberOfPeersToRequestFromTracker;
 
     //STEGFOG purposes
-    private Selector commonSelector;
+//    private Selector commonSelector;
     private ServerSocketChannel commonServerChannel;
 
     /**
@@ -133,7 +133,7 @@ public class Config {
         this.metadataExchangeMaxSize = config.getMetadataExchangeMaxSize();
         this.msePrivateKeySize = config.getMsePrivateKeySize();
         this.numberOfPeersToRequestFromTracker = config.getNumberOfPeersToRequestFromTracker();
-        this.commonSelector = config.getCommonSelector();
+//        this.commonSelector = config.getCommonSelector();
     }
 
     /**
@@ -575,20 +575,20 @@ public class Config {
         return numberOfPeersToRequestFromTracker;
     }
 
-    /**
-     * Lazy initialization of Selector
-     * @return selector
-     */
-    public Selector getCommonSelector() throws IOException {
-        if (this.commonSelector == null) {
-            this.commonSelector = Selector.open();
-        }
-        return commonSelector;
-    }
-
-    public void setCommonSelector(Selector commonSelector) {
-        this.commonSelector = commonSelector;
-    }
+//    /**
+//     * Lazy initialization of Selector
+//     * @return selector
+//     */
+//    public Selector getCommonSelector() throws IOException {
+//        if (this.commonSelector == null) {
+//            this.commonSelector = Selector.open();
+//        }
+//        return commonSelector;
+//    }
+//
+//    public void setCommonSelector(Selector commonSelector) {
+//        this.commonSelector = commonSelector;
+//    }
 
     public ServerSocketChannel getCommonServerChannel() {
         return commonServerChannel;
